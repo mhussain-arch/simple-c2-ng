@@ -1,4 +1,13 @@
-<div class="card flex justify-center gap-5 p-2">
-  <p-button label="Check"></p-button>
-  <p-rating></p-rating>
-</div>
+<p-drawer [(visible)]="visible" header="Menu">
+  <p>
+    This menu shows the data you can see from your spyware. For now, you can see
+    the text data and screenshots.
+  </p>
+  <p-divider/>
+  <div class="flex flex-col gap-5">
+    <button pButton routerLink="/text-logs" label="Logs" size="large"></button>
+    <button pButton label="Screenshots"></button>
+  </div>
+</p-drawer>
+
+<router-outlet/>
