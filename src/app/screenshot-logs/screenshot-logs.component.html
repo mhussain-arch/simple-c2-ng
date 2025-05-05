@@ -1,1 +1,54 @@
-<p>screenshot-logs works!</p>
+@if (!this.isFetching()) {
+    <div class="p-5 w-full">
+        <p-table
+        [value]="screenshotLogsData"
+        [paginator]="true"
+        [rows]="5"
+        [tableStyle]="{'min-width': '50rem'}"
+        [rowsPerPageOptions]="[5,10,15]"
+        >
+    
+        <ng-template #header>
+            <tr>
+                <th style="width:50%">Filename</th>
+                <th pSortableColumn="createdAt" style="width:50%">Timestamp <p-sortIcon field="createdAt"/> </th>
+            </tr>
+        </ng-template>
+        <ng-template #body let-screenshotLogsData>
+            <tr>
+                <td>
+                  <span (click)="onShowDialog(screenshotLogsData)" class="underline decoration-slate-500 cursor-pointer hover:text-slate-500">{{ screenshotLogsData.filename }}</span>
+                </td>
+                <td>{{ screenshotLogsData.createdAt | date: 'long' }}</td>
+            </tr>
+        </ng-template>
+    
+        </p-table>
+    </div>
+} @else {
+    <div class="flex justify-center items-center mt-5">
+        <p-progress-spinner strokeWidth="8" fill="transparent" animationDuration=".5s" [style]="{ width: '50px', height: '50px' }" />
+    </div>
+}
+
+@if(dialogVisible()) {
+    <div class="card flex justify-center">
+        <p-dialog 
+        [header]="this.currentFile.filename[0].toUpperCase() + this.currentFile.filename.slice(1)" 
+        [modal]="true" 
+        [(visible)]="dialogVisible"
+        [style]="{ width: '80vw', minWidth: '300px' }"
+        [contentStyle]="{ 'max-height': '90vh', overflow: 'auto' }"
+        >
+            <div class="image-preview-container">
+                <p-image 
+                [src]="'data:' + this.currentFile.contentType + ';base64,' + this.currentFile.data" 
+                [preview]="true"
+                [alt]="this.currentFile.filename"
+                width="100%"
+                styleClass="preview-image"
+                ></p-image>
+            </div>
+        </p-dialog>
+    </div>
+}
